@@ -14,19 +14,25 @@ int main(int argc, char **argv) {
 
     fd_set readmask;
     fd_set allreads;
+    // 初始化一个描述符集合
     FD_ZERO(&allreads);
     FD_SET(0, &allreads);
     FD_SET(socket_fd, &allreads);
 
     for (;;) {
+        // 每次循环完之后，重新设置待测试的描述符集合
         readmask = allreads;
+        // 检测套接字描述符有数据可读，或者标准输入有数据可读
+        // fd + 1 表示待测试的描述符基数
         int rc = select(socket_fd + 1, &readmask, NULL, NULL, NULL);
 
         if (rc <= 0) {
             error(1, errno, "select failed");
         }
 
+        // 判断那个描述符准备好可读了
         if (FD_ISSET(socket_fd, &readmask)) {
+            // 判断为真，使用 read 将数据读出
             n = read(socket_fd, recv_line, MAXLINE);
             if (n < 0) {
                 error(1, errno, "read error");

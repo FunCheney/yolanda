@@ -103,6 +103,7 @@ int main(int argc, char **argv) {
         buffer[i] = alloc_Buffer();
     }
 
+    // 将监听套接字设置为非阻塞的
     listen_fd = tcp_nonblocking_server_listen(SERV_PORT);
 
     fd_set readset, writeset, exset;
