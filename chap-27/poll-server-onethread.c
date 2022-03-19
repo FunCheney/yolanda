@@ -46,9 +46,11 @@ int onConnectionClosed(struct tcp_connection *tcpConnection) {
 
 int main(int c, char **v) {
     //主线程event_loop
+    // 这个 event_loop 和线程相关联，每个 event_loop 在线程里执行的是一个无限循环，以便完成事件的分发。
     struct event_loop *eventLoop = event_loop_init();
 
     //初始化acceptor
+    // 用来监听在某个端口上
     struct acceptor *acceptor = acceptor_init(SERV_PORT);
 
     //初始tcp_server，可以指定线程数目，如果线程是0，就只有一个线程，既负责acceptor，也负责I/O
